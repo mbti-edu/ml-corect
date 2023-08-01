@@ -114,7 +114,7 @@ def predict_mbti():
 
     # Load model
     model = create_model()
-    model.load_weights('content/model_mbti.h5')
+    model.load_weights('/model_mbti.h5')
 
     # Prediksi tipe MBTI
     prediction = model.predict([input_data])
