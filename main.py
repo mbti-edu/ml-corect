@@ -16,7 +16,11 @@ def create_model():
                   metrics=['accuracy'])
 
     return model
-
+    
+@app.route('/', methods=['GET'])
+def home():
+    return "API is running!"
+    
 @app.route('/predict', methods=['POST'])
 def predict_mbti():
     # Mendapatkan input dari permintaan POST
