@@ -21,7 +21,7 @@ def create_model():
 def home():
     return "API is running!"
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET'])
 def predict():
     # Get the input data from the request
     data = request.get_json()
