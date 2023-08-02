@@ -20,7 +20,12 @@ def create_model():
 @app.route('/', methods=['GET'])
 def home():
     return "API is running!"
-    
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Get the input data from the request
+    data = request.get_json()
+
 @app.route('/predict', methods=['POST'])
 def predict_mbti():
     # Mendapatkan input dari permintaan POST
@@ -114,7 +119,7 @@ def predict_mbti():
 
     # Load model
     model = create_model()
-    model.load_weights('/model_mbti.h5')
+    model.load_weights('content/model_mbti.h5')
 
     # Prediksi tipe MBTI
     prediction = model.predict([input_data])
