@@ -1,36 +1,23 @@
 from flask import Flask, request, jsonify
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
 
-def create_model():
-    model = Sequential()
-    model.add(Dense(64, activation='relu', input_dim=16))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dense(16, activation='softmax'))
-
-    model.compile(optimizer='adam',
-                  loss='categorical_crossentropy',
-                  metrics=['accuracy'])
-
+def load_mbti_model():
+    model = load_model('content/model_mbti.h5')
     return model
     
 @app.route('/', methods=['GET'])
 def home():
     return "API is running!"
 
-@app.route('/predict', methods=['GET'])
-def predict():
-    # Get the input data from the request
-    data = request.get_json()
-
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET','POST'])
 def predict_mbti():
-    # Mendapatkan input dari permintaan POST
-    request_data = request.json['data']
-    
+    if request.method == 'POST':
+        # Mendapatkan input dari permintaan POST
+        request_data = request.json['data']
+
     print(request_data)
     # Pertanyaan untuk setiap dimensi
     questions = [
@@ -118,8 +105,7 @@ def predict_mbti():
     input_data = [score / total for score in input_data]
 
     # Load model
-    model = create_model()
-    model.load_weights('content/model_mbti.h5')
+    model = load_mbti_model()
 
     # Prediksi tipe MBTI
     prediction = model.predict([input_data])
@@ -133,6 +119,7 @@ def predict_mbti():
     }
 
     return jsonify(response)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
